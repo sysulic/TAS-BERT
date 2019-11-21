@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Reviews" type="absa15Reviews"/>
+  <xs:element name="Review" type="absa15Review"/>
+  <xs:element name="sentences" type="absa15Sentences"/>
+  <xs:element name="sentence" type="absa15Sentence"/>
+  <xs:element name="Opinions"  type="absa15OpiSet" nillable="true"/>
+  
+
+  <xs:complexType name="absa15Reviews">
+    <xs:sequence>
+      <xs:element ref="Review" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="absa15Review">
+    <xs:sequence>
+      <xs:element ref="sentences" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="rid" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="absa15Sentences">
+    <xs:sequence>
+      <xs:element ref="sentence" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="absa15Sentence">
+    <xs:sequence>
+      <xs:element name="text" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element ref="Opinions" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+    <xs:attribute name="OutOfScope" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="absa15OpiSet">
+    <xs:sequence>
+      <xs:element name="Opinion" type="absa15Opinion" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="absa15Opinion">
+    <xs:sequence/>
+    <xs:attribute name="target" type="xs:string"/>
+    <xs:attribute name="category" type="xs:string"/>
+    <xs:attribute name="polarity" type="xs:string"/>
+    <xs:attribute name="from" type="xs:int"/>
+    <xs:attribute name="to" type="xs:int"/>
+    <xs:attribute name="NotConf" type="xs:string"/>
+  </xs:complexType>
+  
+</xs:schema>
+
+
