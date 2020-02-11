@@ -20,6 +20,8 @@ def change_TO_to_BIO(path, file_name):
 	entity_label = r"T+"
 	output_path = path + '/BIO'
 	file_out = file_name
+	if not os.path.exists(output_path):
+		os.makedirs(output_path)
 	with open(os.path.join(input_path, TSV_file(file_name)), 'r', encoding='utf-8') as fin, open(os.path.join(output_path, TSV_file(file_out)), 'w', encoding='utf-8') as fout:
 		fout.write('\t'.join(['sentence_id', 'yes_no', 'aspect_sentiment', 'sentence', 'ner_tags']))
 		fout.write('\n')
@@ -36,7 +38,7 @@ def change_TO_to_BIO(path, file_name):
 				BIO_tags[start] = 'B'
 				for m in range(start+1, start+en_len):
 					BIO_tags[m] = 'I'
-			
+
 			line_arr[-1] = ' '.join(BIO_tags)
 			fout.write('\t'.join(line_arr))
 			fout.write('\n')

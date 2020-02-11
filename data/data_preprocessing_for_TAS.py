@@ -36,6 +36,8 @@ def get_aspect_sentiment_compose(path, file_name):
 def create_dataset_file(input_path, output_path, input_file, output_file, compose_set):
 	max_len = 0
 	entity_sum = 0
+	if not os.path.exists(output_path):
+		os.makedirs(output_path)
 	with open(os.path.join(input_path, TXT_file(input_file)), 'r', encoding='utf-8') as fin, open(os.path.join(output_path, TSV_file(output_file)), 'w', encoding='utf-8') as fout:
 		fout.write('\t'.join(['sentence_id', 'yes_no', 'aspect_sentiment', 'sentence', 'ner_tags']))
 		fout.write('\n')
@@ -44,7 +46,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 		pre_sentence_id = 'XXX'	# sentence id of the previous line
 		pre_sentence = 'XXX'
 		record_of_one_sentence = set()	# the set of aspect&sentiment that this sentence contains
-		record_of_one_sentence_ner_tag = {}	# the ner tags of the set of aspect&sentiment that this sentence contains
+		record_of_one_sentence_ner_tag = {}	# the NER tags of the set of aspect&sentiment that this sentence contains
 		for line in fin:
 			line_arr = line.strip().split('\t')
 			sentence_id = line_arr[0]
@@ -57,7 +59,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 						# create no line
 						else:
 							fout.write(pre_sentence_id + '\t' + '0' + '\t' + x + '\t' + pre_sentence + '\t' + ' '.join(['O']*len(pre_sentence.split())) + '\n')
-						
+
 				else:
 					pre_start = True
 				record_of_one_sentence.clear()
@@ -66,7 +68,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 
 
 			if line_arr[6] == 'yes':	# entailed == yes
-				# get ner labels
+				# get NER labels
 				sentence = line_arr[1].strip().split(' ')
 				gold_target = ' '.join(line_arr[2].strip().split())
 				ner_tags = ['O'] * len(sentence)
@@ -83,10 +85,10 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 						print(gold_target)
 						print(get_target)
 						print(str(start) + ' - ' + str(end))
-					
+
 					for x in range(start, end):
 						ner_tags[x] = 'T'
-				
+
 				sentence_clear = []
 				ner_tags_clear = []
 				# solve the '  ' multi space
@@ -113,17 +115,17 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 								#print(str(m) + ' - ' + str(m+punctuation_list_len[i]))
 								sentence_clear.append(sentence[x][m:m+punctuation_list_len[i]])
 								ner_tags_clear.append(ner_tags[x])
-								
+
 								if i != len(punctuation_list_start) - 1:
 									if m+punctuation_list_len[i] != punctuation_list_start[i+1] :
 										sentence_clear.append(sentence[x][m+punctuation_list_len[i]:punctuation_list_start[i+1]])
 										ner_tags_clear.append(ner_tags[x])
-									
+
 								else:
 									if m+punctuation_list_len[i] < len(sentence[x]):
 										sentence_clear.append(sentence[x][m+punctuation_list_len[i]:])
 										ner_tags_clear.append(ner_tags[x])
-										
+
 
 						else: # has no punctuation
 							sentence_clear.append(sentence[x])
@@ -134,7 +136,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 
 				# get aspect&sentiment
 				cate_pola = line_arr[3] + ' ' + line_arr[4]
-				
+
 				pre_sentence = ' '.join(sentence_clear)
 				assert '  ' not in pre_sentence
 
@@ -159,7 +161,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 	print('entity_sum: ', entity_sum)
 	print('max_sen_len: ', max_len)
 
-				
+
 
 
 if __name__ == '__main__':

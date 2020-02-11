@@ -41,7 +41,7 @@ class DataProcessor(object):
     def get_dev_examples(self, data_dir):
         """Gets a collection of `InputExample`s for the dev set."""
         raise NotImplementedError()
-    
+
     def get_test_examples(self, data_dir):
         """Gets a collection of `InputExample`s for the test set."""
         raise NotImplementedError()
@@ -53,7 +53,7 @@ class DataProcessor(object):
     def get_ner_labels(self):
         """Gets the list of labels for this data set."""
         raise NotImplementedError()
-    
+
     @classmethod
     def _read_tsv(cls, input_file, quotechar=None):
         """Reads a tab separated value file."""
@@ -104,7 +104,7 @@ class Semeval_Processor(DataProcessor):
                         ner_labels.append(x)
         print(ner_labels)
         return ner_labels
-    
+
     def _create_examples(self, lines, set_type):
         """Creates examples."""
         examples = []
@@ -112,7 +112,7 @@ class Semeval_Processor(DataProcessor):
             line_arr = line.strip().split('\t')
             guid = "%s-%s" % (set_type, i)
             text_a = tokenization.convert_to_unicode(str(line_arr[3])) # sentence
-            text_b = tokenization.convert_to_unicode(str(line_arr[2])) # category_polarity or polarity
+            text_b = tokenization.convert_to_unicode(str(line_arr[2])) # category_polarity
             label = tokenization.convert_to_unicode(str(line_arr[1])) # yes or no
             ner_labels_a = tokenization.convert_to_unicode(str(line_arr[4])) # ner tags
 
