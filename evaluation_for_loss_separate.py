@@ -84,6 +84,11 @@ if __name__ == '__main__':
 						type=str,
 						required=True,
 						help="The output_dir of subtask T in training & testing")
+	parser.add_argument("--tag_schema",
+						type=str,
+						required=True,
+						choices=["TO", "BIO"],
+						help="The tag schema of the result")
 	parser.add_argument("--num_epochs",
 						type=int,
 						required=True,
@@ -97,7 +102,7 @@ if __name__ == '__main__':
 	best_F_AS = 0
 	best_ep_T = 0
 	best_F_T = 0
-	if '/TO' in path:
+	if args.tag_schema == 'TO':
 		entity_label = r"T+" # for TO
 	else:
 		entity_label = r"BI*" # for BIO

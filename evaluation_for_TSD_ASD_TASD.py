@@ -13,12 +13,13 @@ def TXT_file(name):
 def Clean_file(name):
 	return '{}.tsv'.format(name)
 
-def evaluate_TSD_contain_NULL(path, best_epoch_file):
+def evaluate_TSD_contain_NULL(path, best_epoch_file, tag_schema):
 	with open(os.path.join(path, TXT_file(best_epoch_file)), 'r', encoding='utf-8') as f_pre:
 		Gold_Num = 0
 		True_Num = 0
 		Pre_Num = 0
-		if '/TO/' in path:
+		tag_schema == 'TO'
+		if tag_schema == 'TO':
 			entity_label = r"T+" # for TO
 		else:
 			entity_label = r"BI*" # for BIO
@@ -147,12 +148,12 @@ def evaluate_TSD_contain_NULL(path, best_epoch_file):
 		print("\tP: ", P, "   R: ", R, "  F1: ", F)
 		print('----------------------------------------------------\n\n')
 
-def evaluate_TSD_ignore_NULL(path, best_epoch_file):
+def evaluate_TSD_ignore_NULL(path, best_epoch_file, tag_schema):
 	with open(os.path.join(path, TXT_file(best_epoch_file)), 'r', encoding='utf-8') as f_pre:
 		Gold_Num = 0
 		True_Num = 0
 		Pre_Num = 0
-		if '/TO/' in path:
+		if tag_schema == 'TO':
 			entity_label = r"T+" # for TO
 		else:
 			entity_label = r"BI*" # for BIO
@@ -273,7 +274,7 @@ def evaluate_ASD(path, best_epoch_file):
 		print('----------------------------------------------------\n\n')
 
 
-def evaluate_TASD(path, epochs):
+def evaluate_TASD(path, epochs, tag_schema):
 	# record the best epoch
 	best_epoch_file = ''
 	best_P = 0
@@ -297,7 +298,7 @@ def evaluate_TASD(path, epochs):
 			NO_and_O_Gold_Num = 0
 			NO_and_O_True_Num = 0
 			NO_and_O_Pre_Num = 0
-			if '/TO/' in path:
+			if tag_schema == 'TO':
 				entity_label = r"T+" # for TO
 			else:
 				entity_label = r"BI*" # for BIO
@@ -425,6 +426,11 @@ if __name__ == '__main__':
 						type=str,
 						required=True,
 						help="The output_dir in training & testing")
+	parser.add_argument("--tag_schema",
+						type=str,
+						required=True,
+						choices=["TO", "BIO"],
+						help="The tag schema of the result")
 	parser.add_argument("--num_epochs",
 						type=int,
 						required=True,
@@ -433,10 +439,10 @@ if __name__ == '__main__':
 
 	args = parser.parse_args()
 
-	best_epoch_file = evaluate_TASD(args.output_dir, args.num_epochs)
+	best_epoch_file = evaluate_TASD(args.output_dir, args.num_epochs, args.tag_schema)
 	evaluate_ASD(args.output_dir, best_epoch_file)
-	evaluate_TSD_contain_NULL(args.output_dir, best_epoch_file)
-	evaluate_TSD_ignore_NULL(args.output_dir, best_epoch_file)
+	evaluate_TSD_contain_NULL(args.output_dir, best_epoch_file, args.tag_schema)
+	evaluate_TSD_ignore_NULL(args.output_dir, best_epoch_file, args.tag_schema)
 
 
 

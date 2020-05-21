@@ -108,17 +108,21 @@ If you want to evaluate the test result for each epoch, you can use the followin
   ```
   python evaluation_for_TSD_ASD_TASD.py \
   --output_dir results/semeval2016/three_joint/BIO/my_result \
-  --num_epochs 30
+  --num_epochs 30 \
+  --tag_schema BIO
   ```
   
-"All tuples" correspond to "C1" in Table 3 of our paper.
-  
-"Only NULL tuples" correspond to "C2" in Table 3 of our paper.
-  
-"NO and pure O tag sequence" correspond to "C3" in Table 3 of our paper.
-  
 
-  
+⭐**The *tag_schema* bust be consistent with the contents in the *output_dir*, otherwise you will get error results.**
+
+"All tuples" correspond to "C1" in Table 3 of our paper.
+
+"Only NULL tuples" correspond to "C2" in Table 3 of our paper.
+
+"NO and pure O tag sequence" correspond to "C3" in Table 3 of our paper.
+
+
+
 
 As for the TD, AD and TAD tasks, we use [the evaluation tool provided by the SemEval2015 competition](http://alt.qcri.org/semeval2015/task12/index.php?id=data-and-tools). The tool requires a Java  environment.
 
@@ -130,7 +134,8 @@ As for the TD, AD and TAD tasks, we use [the evaluation tool provided by the Sem
   --gold_path ../data/semeval2016/three_joint/BIO/test_TAS.tsv \
   --pre_path ../results/semeval2016/three_joint/BIO/my_result/test_ep_23.txt \
   --gold_xml_file ABSA16_Restaurants_Test.xml \
-  --pre_xml_file pred_file_2016.xml
+  --pre_xml_file pred_file_2016.xml \
+  --tag_schema BIO
   ```
 
   **Note: the "test_ep_*.txt" is the best epoch on the TASD task.**
@@ -211,5 +216,6 @@ CUDA_VISIBLE_DEVICES=0 python TAS_BERT_separate.py \
 python evaluation_for_loss_separate.py \
 --output_dir_AS results/semeval2016/three_joint/BIO/my_result_AS \
 --output_dir_T results/semeval2016/three_joint/BIO/my_result_T \
---num_epochs 30
+--num_epochs 30 \
+--tag_schema BIO
 ```

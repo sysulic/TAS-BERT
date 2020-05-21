@@ -34,6 +34,8 @@ def get_aspect_sentiment_compose(path, file_name):
 
 
 def create_dataset_file(input_path, output_path, input_file, output_file, compose_set):
+	one_data_nums = 0
+	zero_data_nums = 0
 	max_len = 0
 	entity_sum = 0
 	if not os.path.exists(output_path):
@@ -56,9 +58,11 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 						# create yes line of this sentence
 						if x in record_of_one_sentence:
 							fout.write(pre_sentence_id + '\t' + '1' + '\t' + x + '\t' + pre_sentence + '\t' + record_of_one_sentence_ner_tag[x] + '\n')
+							one_data_nums += 1
 						# create no line
 						else:
 							fout.write(pre_sentence_id + '\t' + '0' + '\t' + x + '\t' + pre_sentence + '\t' + ' '.join(['O']*len(pre_sentence.split())) + '\n')
+							zero_data_nums += 1
 
 				else:
 					pre_start = True
@@ -160,6 +164,7 @@ def create_dataset_file(input_path, output_path, input_file, output_file, compos
 					entity_sum += 1
 	print('entity_sum: ', entity_sum)
 	print('max_sen_len: ', max_len)
+	print('sample ratio: ', str(one_data_nums), '-', str(zero_data_nums))
 
 
 

@@ -39,10 +39,15 @@ if __name__ == '__main__':
 						type=str,
 						required=True,
 						help="get the prediction file in XML format")
+	parser.add_argument("--tag_schema",
+						type=str,
+						required=True,
+						choices=["TO", "BIO"],
+						help="The tag schema of the result in pre_path")
 
 	args = parser.parse_args()
 
-	if 'BIO' in args.gold_path:
+	if args.tag_schema == 'BIO':
 		entity_label = r"BI*" # for BIO
 	else:
 		entity_label = r"T+" # for TO
@@ -142,4 +147,4 @@ if __name__ == '__main__':
 		xml_string = ET.tostring(root)
 		xml_write = DOM.parseString(xml_string)
 		with open(args.pre_xml_file, 'w') as handle:
-			xml_write.writexml(handle, indent=' ', newl='\n', encoding='utf-8')
+			xml_write.writexml(handle, indent=' ', encoding='utf-8')
