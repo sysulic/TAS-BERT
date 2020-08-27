@@ -1,6 +1,6 @@
 # TAS-BERT
 
-Code and data for our paper [Target-Aspect-Sentiment Joint Detection for Aspect-Based Sentiment Analysis" (AAAI 2020)](https://aaai.org/Papers/AAAI/2020GB/AAAI-WanH.1150.pdf)
+Code and data for our paper [Target-Aspect-Sentiment Joint Detection for Aspect-Based Sentiment Analysis" (AAAI 2020)](https://aaai.org/ojs/index.php/AAAI/article/view/6447)
 
 Our code is based on [Utilizing BERT for Aspect-Based Sentiment Analysis via Constructing Auxiliary Sentence (NAACL 2019)](https://github.com/HSLCY/ABSA-BERT-pair)
 
